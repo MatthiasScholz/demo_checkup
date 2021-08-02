@@ -1,0 +1,22 @@
+---
+version: '3'
+
+services:
+  checker:
+    image: checkup_checkup
+    command: ["every", "10s"]
+    volumes:
+      - ./checkup.json:/etc/checkup.json
+      - measurements:/tmp:rw
+    restart: until-stopped
+  server:
+    image: checkup_checkup
+    ports:
+      - 3030:3000
+    volumes:
+      - ./checkup.json:/etc/checkup.json
+      - measurements:/tmp:ro
+    restart: until-stopped
+
+volumes:
+  measurements:
